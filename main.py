@@ -275,7 +275,7 @@ def processData(in_file_name, cust_dict,lag_cust_dict1,lag_cust_dict2,lag_cust_d
                     if prod>0:
                         assert len(prev_target_list) == 22
                         x_vars_list.append(x_vars+prev_target_list+lag_target_list1+lag_target_list2+lag_target_list3+lag_target_list4)
-                        y_vars_list.append(ind)        
+                        y_vars_list.append(ind)      #return list of lists, withs the lists containing 24 product's info  
         
     return x_vars_list, y_vars_list, cust_dict, lag_cust_dict1, lag_cust_dict2,lag_cust_dict3,lag_cust_dict4
 	
@@ -446,9 +446,9 @@ print("Getting the top products..")
 test_id = np.array(pd.read_csv(data_path + "test_ver2.csv", usecols=['ncodpers'])['ncodpers'])
 new_products = []
 for i, idx in enumerate(test_id):   #reduce prob of products bought last month to 0
-    new_products.append([max(x1 - x2,0) for (x1, x2) in zip(preds[i,:], cust_dict[idx])])
+    new_products.append([max(x1 - x2,0) for (x1, x2) in zip(preds[i,:], cust_dict[idx])])#since we only want to recommend new products
 target_cols = np.array(target_cols)
-preds = np.argsort(np.array(new_products), axis=1)
+preds = np.argsort(np.array(new_products), axis=1)#sorting the product in the increasing order of preference
 
 
 #DROP product 7,8,9,12,18 as theese items have not been purchased /not popular in recent months. 
